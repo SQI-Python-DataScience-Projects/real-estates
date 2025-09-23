@@ -64,8 +64,8 @@ This platform enables **admins, vendors, and customers** to interact seamlessly 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/real-estate-platform.git
-cd real-estate-platform
+git clone https://github.com/SQI-Python-DataScience-Projects/real-estates.git
+cd real-estates
 ```
 
 ### 2. Create & activate virtual environment
