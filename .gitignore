@@ -1,1 +1,5 @@
-.Renv
+# Virtual environments
+.Renv/
+venv/
+env/
+.venv/
