@@ -1,2 +1,2 @@
-REnv
-requirements.txt
+# Virtual environments
+.Renv/
