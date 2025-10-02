@@ -3,3 +3,6 @@ Django==5.2.6
 sqlparse==0.5.3
 tzdata==2025.2
 pillow==11.3.0
+
+
+# A real estate template. html, css, JS
