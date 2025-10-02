@@ -1,12 +1,130 @@
-{% extends 'base.html' %}
-{% block title %}Login - MySite{% endblock %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
-<div class="row justify-content-center">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Title  -->
+    
+    <title>South - Real Estate Agency Template | Home</title>
+
+    <!-- Favicon  -->
+    <link rel="icon" href="{% static "img/core-img/favicon.ico" %}">
+
+    <!-- Style CSS -->
+    
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'css/classy-nav.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/nice-select.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
+    <link rel="stylesheet" href="{% static "style.css" %}">
+
+</head>
+
+<body>  
+
+
+  <!-- Main Header Area -->
+<div class="main-header-area" id="stickyHeader" style="background-color: rgba(0, 0, 0, 0.925);">
+  <div class="classy-nav-container breakpoint-off">
+      <!-- Classy Menu -->
+      <nav class="classy-navbar justify-content-between" id="southNav">
+
+          <!-- Logo -->
+          <a class="nav-brand" href="{% url "index" %}"><img src="{% static "img/core-img/logo.png" %}" alt="image"></a>
+
+          <!-- Navbar Toggler -->
+          <div class="classy-navbar-toggler">
+              <span class="navbarToggler"><span></span><span></span><span></span></span>
+          </div>
+
+          <!-- Menu -->
+          <div class="classy-menu">
+
+              <!-- close btn -->
+              <div class="classycloseIcon">
+                  <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+              </div>
+
+              <!-- Nav Start -->
+              <div class="classynav">
+                  <ul>
+                      <li><a href="{% url "index" %}">Home</a></li>
+                      <li><a href="#">Pages</a>
+                          <ul class="dropdown">
+                              <li><a href="{% url "index" %}">Home</a></li>
+                              <li><a href="{% url "about-us" %}">About Us</a></li>
+                              <li><a href="#">Listings</a>
+                                  <ul class="dropdown">
+                                      <li><a href="{% url "listings" %}">Listings</a></li>
+                                      <li><a href="{% url "single-listings" %}">Single Listings</a></li>
+                                  </ul>
+                              </li>
+                              <li><a href="#">Blog</a>
+                                  <ul class="dropdown">
+                                      <li><a href="{% url "blog" %}">Blog</a></li>
+                                      <li><a href="{% url "single-blog" %}">Single Blog</a></li>
+                                  </ul>
+                              </li>
+                              <li><a href="{% url "contact" %}">Contact</a></li>
+                              <li><a href="{% url "elements" %}">Elements</a></li>
+                          </ul>
+                      </li>
+                      <li><a href="{% url "about-us" %}">About Us</a></li>
+                      <li><a href="{% url "listings" %}">Properties</a></li>
+                      <li><a href="{% url "blog" %}">Blog</a></li>
+                      <li><a href="#">Accounts</a>
+                          <div class="dropdown">
+                              {% if user.is_authenticated %}
+                                  <ul><a href="{% url 'logout' %}">Logout</a></ul>
+                              {% else %}
+                                  <ul><a href="{% url 'login' %}">Login</a></ul>
+                                  <ul><a href="{% url 'register' %}">Register</a></ul>
+                              {% endif %}
+                          </div>
+                      </li>
+                      <li><a href="{% url "contact" %}">Contact</a></li>
+                  </ul>
+
+                  <!-- Search Form -->
+                  <div class="south-search-form">
+                      <form action="#" method="post">
+                          <input type="search" name="search" id="search" placeholder="Search Anything ...">
+                          <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                      </form>
+                  </div>
+
+                  <!-- Search Button -->
+                  <a href="#" class="searchbtn"><i class="fa" aria-hidden="true"></i></a>
+              </div>
+              <!-- Nav End -->
+          </div>
+      </nav>
+  </div>
+</div>
+    <!-- ##### Header Area End ##### -->
+
+
+
+
+
+<div class="row justify-content-center" style="padding-block: 100px;">
   <div class="col-md-6 col-lg-5">
     <div class="card shadow rounded-4">
       <div class="card-body p-4">
-        <h3 class="text-center text-primary mb-4">Login</h3>
+        <h3 class="text-center mb-4" style="color: rgb(148, 112, 84);">Login</h3>
 
         {% if messages %}
             {% for message in messages %}
@@ -19,22 +137,146 @@
           {% csrf_token %}
           {{form.as_p}}
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <a href="#" class="small">Forgot password?</a>
+            <a href="#" class="small" style="color: rgb(148, 112, 84);">Forgot password?</a>
           </div>
-          <button type="submit" class="btn btn-primary w-100">Log In</button>
+          <button type="submit" class="btn  w-100" style="background-color: rgb(148, 112, 84);color: white;">Log In</button>
         </form>
         <p class="text-center mt-3 mb-0">
-          Don’t have an account? <a href="{% url 'register' %}">Sign Up</a>
+          Don’t have an account? <a href="{% url 'register' %}" style="color: rgb(148, 112, 84);">Sign Up</a>
         </p>
       </div>
     </div>
   </div>
 </div>
-{% endblock %}
 
 
 
 
-{% comment %} create an organisan on github account
-add everyone to the organisation
-SQI DJANGO {% endcomment %}
+
+<!-- ##### Footer Area Start ##### -->
+<footer class="footer-area section-padding-100-0 bg-img gradient-background-overlay" style="background-image: url('{% static "img/bg-img/cta.jpg" %}');">
+    <!-- Main Footer Area -->
+    <div class="main-footer-area">
+        <div class="container">
+            <div class="row">
+
+                <!-- Single Footer Widget -->
+                <div class="col-12 col-sm-6 col-xl-3">
+                    <div class="footer-widget-area mb-100">
+                        <!-- Widget Title -->
+                        <div class="widget-title">
+                            <h6>About Us</h6>
+                        </div>
+
+                        <img src="{% static "img/bg-img/footer.jpg" %}" alt="">
+                        <div class="footer-logo my-4">
+                            <img src="{% static "img/core-img/logo.png" %}" alt="">
+                        </div>
+                        <p>Integer nec bibendum lacus. Suspen disse dictum enim sit amet libero males uada feugiat. Praesent malesuada.</p>
+                    </div>
+                </div>
+
+                <!-- Single Footer Widget -->
+                <div class="col-12 col-sm-6 col-xl-3">
+                    <div class="footer-widget-area mb-100">
+                        <!-- Widget Title -->
+                        <div class="widget-title">
+                            <h6>Hours</h6>
+                        </div>
+                        <!-- Office Hours -->
+                        <div class="weekly-office-hours">
+                            <ul>
+                                <li class="d-flex align-items-center justify-content-between"><span>Monday - Friday</span> <span>09 AM - 19 PM</span></li>
+                                <li class="d-flex align-items-center justify-content-between"><span>Saturday</span> <span>09 AM - 14 PM</span></li>
+                                <li class="d-flex align-items-center justify-content-between"><span>Sunday</span> <span>Closed</span></li>
+                            </ul>
+                        </div>
+                        <!-- Address -->
+                        <div class="address">
+                            <h6><img src="{% static "img/icons/phone-call.png" %}" alt=""> +45 677 8993000 223</h6>
+                            <h6><img src="{% static "img/icons/envelope.png" %}" alt=""> office@template.com</h6>
+                            <h6><img src="{% static "img/icons/location.png" %}" alt=""> Main Str. no 45-46, b3, 56832, Los Angeles, CA</h6>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Single Footer Widget -->
+                <div class="col-12 col-sm-6 col-xl-3">
+                    <div class="footer-widget-area mb-100">
+                        <!-- Widget Title -->
+                        <div class="widget-title">
+                            <h6>Useful Links</h6>
+                        </div>
+                        <!-- Nav -->
+                        <ul class="useful-links-nav d-flex align-items-center">
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">About us</a></li>
+                            <li><a href="#">About us</a></li>
+                            <li><a href="#">Services</a></li>
+                            <li><a href="#">Properties</a></li>
+                            <li><a href="#">Listings</a></li>
+                            <li><a href="#">Testimonials</a></li>
+                            <li><a href="#">Properties</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Testimonials</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">Elements</a></li>
+                            <li><a href="#">FAQ</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Single Footer Widget -->
+                <div class="col-12 col-sm-6 col-xl-3">
+                    <div class="footer-widget-area mb-100">
+                        <!-- Widget Title -->
+                        <div class="widget-title">
+                            <h6>Featured Properties</h6>
+                        </div>
+                        <!-- Featured Properties Slides -->
+                        <div class="featured-properties-slides owl-carousel">
+                            <!-- Single Slide -->
+                            <div class="single-featured-properties-slide">
+                                <a href="#"><img src="{% static "img/bg-img/fea-product.jpg" %}" alt=""></a>
+                            </div>
+                            <!-- Single Slide -->
+                            <div class="single-featured-properties-slide">
+                                <a href="#"><img src="{% static "img/bg-img/fea-product.jpg" %}" alt=""></a>
+                            </div>
+                            <!-- Single Slide -->
+                            <div class="single-featured-properties-slide">
+                                <a href="#"><img src="{% static "img/bg-img/fea-product.jpg" %}" alt=""></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Copywrite Text -->
+    <div class="copywrite-text d-flex align-items-center justify-content-center">
+        <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+    </div>
+</footer>
+<!-- ##### Footer Area End ##### -->
+
+<!-- jQuery (Necessary for All JavaScript Plugins) -->
+<script src="{% static "js/jquery/jquery-2.2.4.min.js" %}"></script>
+<!-- Popper js -->
+<script src="{% static "js/popper.min.js" %}"></script>
+<!-- Bootstrap js -->
+<script src="{% static "js/bootstrap.min.js" %}"></script>
+<!-- Plugins js -->
+<script src="{% static "js/plugins.js" %}"></script>
+<script src="{% static "js/classy-nav.min.js" %}"></script>
+<script src="{% static "js/jquery-ui.min.js" %}"></script>
+<!-- Active js -->
+<script src="{% static "js/active.js" %}"></script>
+
+</body>
+
+</html>
