@@ -21,3 +21,6 @@ db.sqlite3
 # IDE/editor settings
 .vscode/
 .idea/
+
+# MY VIRTUAL ENVIRONMENT- TINUKE
+.Renv 

@@ -1,0 +1,256 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit Profile - South Real Estate{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb Area -->
+<section class="breadcumb-area bg-img" style="background-image: url('{% static 'img/bg-img/hero1.jpg' %}');">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-12">
+                <div class="breadcumb-content">
+                    <h3 class="breadcumb-title">Edit Profile</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Edit Profile Area -->
+<section class="south-contact-area section-padding-100">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-10">
+                <div class="contact-form">
+                    <h5 class="mb-4" style="border-bottom: 2px solid #ff6363; padding-bottom: 15px;">
+                        Edit Profile
+                    </h5>
+                    
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- Basic Information -->
+                        <h6 class="mb-3" style="color: #ff6363; font-weight: 600;">
+                            <i class="fa fa-user"></i> Basic Information
+                        </h6>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ user_form.first_name.id_for_label }}">First Name</label>
+                                {{ user_form.first_name }}
+                                {% if user_form.first_name.errors %}
+                                    <small class="text-danger">{{ user_form.first_name.errors }}</small>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ user_form.last_name.id_for_label }}">Last Name</label>
+                                {{ user_form.last_name }}
+                                {% if user_form.last_name.errors %}
+                                    <small class="text-danger">{{ user_form.last_name.errors }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label for="{{ user_form.username.id_for_label }}">Username</label>
+                            {{ user_form.username }}
+                            {% if user_form.username.errors %}
+                                <small class="text-danger">{{ user_form.username.errors }}</small>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group mb-3">
+                            <label for="{{ user_form.phone_number.id_for_label }}">Phone Number</label>
+                            {{ user_form.phone_number }}
+                            {% if user_form.phone_number.errors %}
+                                <small class="text-danger">{{ user_form.phone_number.errors }}</small>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group mb-4">
+                            <label for="{{ user_form.profile_image.id_for_label }}">Profile Image</label>
+                            {{ user_form.profile_image }}
+                            {% if user_form.profile_image.errors %}
+                                <small class="text-danger">{{ user_form.profile_image.errors }}</small>
+                            {% endif %}
+                            {% if user.profile_image %}
+                                <div class="mt-2">
+                                    <img src="{{ user.profile_image.url }}" alt="Current profile" style="width: 100px; height: 100px; object-fit: cover; border-radius: 5px;">
+                                    <p class="text-muted mt-1"><small>Current image</small></p>
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Role-Specific Information -->
+                        {% if profile_form %}
+                            <hr class="my-4">
+                            
+                            {% if user.role == 'vendor' %}
+                                <h6 class="mb-3" style="color: #ff6363; font-weight: 600;">
+                                    <i class="fa fa-briefcase"></i> Vendor Information
+                                </h6>
+                                
+                                <div class="form-group mb-3">
+                                    <label for="{{ profile_form.company_name.id_for_label }}">Company Name</label>
+                                    {{ profile_form.company_name }}
+                                    {% if profile_form.company_name.errors %}
+                                        <small class="text-danger">{{ profile_form.company_name.errors }}</small>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="form-group mb-3">
+                                    <label for="{{ profile_form.business_address.id_for_label }}">Business Address</label>
+                                    {{ profile_form.business_address }}
+                                    {% if profile_form.business_address.errors %}
+                                        <small class="text-danger">{{ profile_form.business_address.errors }}</small>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="form-group mb-3">
+                                    <label for="{{ profile_form.bio.id_for_label }}">Bio</label>
+                                    {{ profile_form.bio }}
+                                    {% if profile_form.bio.errors %}
+                                        <small class="text-danger">{{ profile_form.bio.errors }}</small>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                            
+                            {% if user.role == 'customer' %}
+                                <h6 class="mb-3" style="color: #ff6363; font-weight: 600;">
+                                    <i class="fa fa-heart"></i> Customer Preferences
+                                </h6>
+                                
+                                <div class="form-group mb-3">
+                                    <label for="{{ profile_form.date_of_birth.id_for_label }}">Date of Birth</label>
+                                    {{ profile_form.date_of_birth }}
+                                    {% if profile_form.date_of_birth.errors %}
+                                        <small class="text-danger">{{ profile_form.date_of_birth.errors }}</small>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="form-group mb-3">
+                                    <label for="{{ profile_form.occupation.id_for_label }}">Occupation</label>
+                                    {{ profile_form.occupation }}
+                                    {% if profile_form.occupation.errors %}
+                                        <small class="text-danger">{{ profile_form.occupation.errors }}</small>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="form-group mb-3">
+                                    <label for="{{ profile_form.preferred_location.id_for_label }}">Preferred Location</label>
+                                    {{ profile_form.preferred_location }}
+                                    {% if profile_form.preferred_location.errors %}
+                                        <small class="text-danger">{{ profile_form.preferred_location.errors }}</small>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ profile_form.budget_min.id_for_label }}">Minimum Budget</label>
+                                        {{ profile_form.budget_min }}
+                                        {% if profile_form.budget_min.errors %}
+                                            <small class="text-danger">{{ profile_form.budget_min.errors }}</small>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ profile_form.budget_max.id_for_label }}">Maximum Budget</label>
+                                        {{ profile_form.budget_max }}
+                                        {% if profile_form.budget_max.errors %}
+                                            <small class="text-danger">{{ profile_form.budget_max.errors }}</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                        
+                        <div class="mt-4">
+                            <button type="submit" class="btn south-btn mr-3">
+                                <i class="fa fa-save"></i> Save Changes
+                            </button>
+                            <a href="{% url 'profile' %}" class="btn south-btn-outline">
+                                <i class="fa fa-times"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .contact-form input[type="text"],
+    .contact-form input[type="date"],
+    .contact-form input[type="number"],
+    .contact-form input[type="file"],
+    .contact-form textarea {
+        width: 100%;
+        height: 50px;
+        border: 1px solid #ebebeb;
+        padding: 0 20px;
+        font-size: 14px;
+        color: #6c757d;
+        margin-bottom: 5px;
+        transition: all 0.3s ease;
+    }
+    
+    .contact-form textarea {
+        height: 120px;
+        padding: 15px 20px;
+        resize: vertical;
+    }
+    
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+        border-color: #ff6363;
+        outline: none;
+    }
+    
+    .contact-form label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .text-danger {
+        color: #dc3545;
+        font-size: 12px;
+        display: block;
+        margin-top: 5px;
+    }
+    
+    .south-btn-outline {
+        display: inline-block;
+        min-width: 140px;
+        height: 50px;
+        color: #ff6363;
+        border: 2px solid #ff6363;
+        border-radius: 0;
+        padding: 0 30px;
+        font-size: 12px;
+        line-height: 46px;
+        font-weight: 600;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+        background-color: transparent;
+        text-decoration: none;
+    }
+    
+    .south-btn-outline:hover {
+        background-color: #ff6363;
+        color: #ffffff !important;
+        border-color: #ff6363;
+        text-decoration: none;
+    }
+    
+    .mr-3 {
+        margin-right: 15px;
+    }
+</style>
+{% endblock %}

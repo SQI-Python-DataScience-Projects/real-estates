@@ -1,39 +1,35 @@
 from django import forms
-from .models import CustomUser
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordResetForm, SetPasswordForm, AuthenticationForm
+from .models import CustomUser, VendorProfile, CustomerProfile
 
 
 class RegistrationForm(UserCreationForm):
+    username = forms.CharField(
+        max_length= 40,
+        widget = forms.TextInput(attrs={
+            "class":"form-control"})
+    )
     email = forms.EmailField(
         widget=forms.EmailInput(attrs={
-            "class": "form-control",
-            "placeholder": "Enter your email"
-        })
-    )
-    username = forms.CharField(
-        max_length=40,
-        widget=forms.TextInput(attrs={
-            "class": "form-control",
-            "placeholder": "Choose a username"
-        })
-    )
-    password1 = forms.CharField(
-        widget=forms.PasswordInput(attrs={
-            "class": "form-control",
-            "placeholder": "Create password"
-        })
-    )
+            "class":"form-control"})
+            )
+    password1 = forms.CharField( 
+        label="Password",
+        widget = forms.PasswordInput(attrs={
+            "class":"form-control"})
+            )
     password2 = forms.CharField(
-        widget=forms.PasswordInput(attrs={
-            "class": "form-control",
-            "placeholder": "Confirm password"
-        })
-    )
+        label="Confirm Password",
+        widget = forms.PasswordInput(attrs={
+            "class":"form-control"})
+            )
 
     class Meta:
         model = CustomUser
-        fields = ('email', 'username', 'password1', 'password2')
-
+        fields = ("username","email","password1","password2")
+        
+        
+    
 
 class CustomLoginForm(AuthenticationForm):
     username = forms.CharField(
@@ -48,3 +44,90 @@ class CustomLoginForm(AuthenticationForm):
             "class":"form-control"
             })
         )
+
+class CustomUserCreationForm(UserCreationForm):
+    """Form for creating new users"""
+    class Meta:
+        model = CustomUser
+        fields = ('email', 'username', 'first_name', 'last_name', 'role')
+        
+
+class CustomUserChangeForm(UserChangeForm):
+    """Form for updating users"""
+    class Meta:
+        model = CustomUser
+        fields = ('email', 'username', 'first_name', 'last_name', 'phone_number', 'profile_image')
+
+
+class UserProfileForm(forms.ModelForm):
+    """Form for updating user profile"""
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'username', 'phone_number', 'profile_image']
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}),
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone Number'}),
+            'profile_image': forms.FileInput(attrs={'class': 'form-control'}),
+        }
+
+
+class VendorProfileForm(forms.ModelForm):
+    """Form for updating vendor profile"""
+    class Meta:
+        model = VendorProfile
+        fields = ['company_name', 'business_address', 'bio']
+        widgets = {
+            'company_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Company Name'}),
+            'business_address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Business Address'}),
+            'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 5, 'placeholder': 'Tell us about yourself and your business'}),
+        }
+
+
+class CustomerProfileForm(forms.ModelForm):
+    """Form for updating customer profile"""
+    class Meta:
+        model = CustomerProfile
+        fields = ['date_of_birth', 'occupation', 'preferred_location', 'budget_min', 'budget_max']
+        widgets = {
+            'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'occupation': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Occupation'}),
+            'preferred_location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Preferred Location'}),
+            'budget_min': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Minimum Budget'}),
+            'budget_max': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Maximum Budget'}),
+        }
+
+
+class CustomPasswordResetForm(PasswordResetForm):
+    """Custom password reset form with styling"""
+    email = forms.EmailField(
+        max_length=254,
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your email address',
+            'autocomplete': 'email'
+        })
+    )
+
+
+class CustomSetPasswordForm(SetPasswordForm):
+    """Custom set password form with styling"""
+    new_password1 = forms.CharField(
+        label="New password",
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'New Password',
+            'autocomplete': 'new-password'
+        }),
+        strip=False,
+    )
+    new_password2 = forms.CharField(
+        label="Confirm password",
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Confirm New Password',
+            'autocomplete': 'new-password'
+        }),
+        strip=False,
+    )
