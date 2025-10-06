@@ -1,8 +1,14 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from .forms import RegistrationForm, CustomLoginForm
 from django.contrib import messages
-from django.contrib.auth import login,logout,authenticate
+from django.contrib.auth import login,logout,authenticate,update_session_auth_hash, get_user_model
+from django.contrib.auth.views import (
+    PasswordResetView, PasswordResetDoneView, 
+    PasswordResetConfirmView, PasswordResetCompleteView
+)
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
+from django.urls import reverse_lazy
 
 #Generate auth token
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -15,7 +21,14 @@ from django.core.mail import send_mail, EmailMessage
 from django.conf import settings
 from django.template.loader import render_to_string
 
+from .forms import (
+    RegistrationForm, CustomLoginForm,
+    UserProfileForm, VendorProfileForm, CustomerProfileForm,
+    CustomPasswordResetForm, CustomSetPasswordForm
+)
+from .models import CustomUser, VendorProfile, CustomerProfile
 
+User = get_user_model()
 # Create your views here.
 def index(request):
     return render(request, "index.html")
@@ -70,9 +83,9 @@ def register_page(request):
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
-def activate_account(request,ui64,token):
+def activate_account(request,uid64,token):
     try:
-        uid = force_str(urlsafe_base64_decode(ui64))
+        uid = force_str(urlsafe_base64_decode(uid64))
         user = User.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
@@ -113,3 +126,112 @@ def login_page(request):
 def logout_page(request):
     logout(request)
     return redirect("index")
+
+
+
+@login_required
+def profile_view(request):
+    """Display user profile"""
+    user = request.user
+    context = {'user': user}
+    
+    # Get or create profile based on role
+    if user.role == 'vendor':
+        vendor_profile, created = VendorProfile.objects.get_or_create(user=user)
+        context['vendor_profile'] = vendor_profile
+    elif user.role == 'customer':
+        customer_profile, created = CustomerProfile.objects.get_or_create(user=user)
+        context['customer_profile'] = customer_profile
+    
+    return render(request, 'profile.html', context)
+
+
+@login_required
+def edit_profile_view(request):
+    """Edit user profile (both basic info and role-specific info)"""
+    user = request.user
+    
+    if request.method == 'POST':
+        user_form = UserProfileForm(request.POST, request.FILES, instance=user)
+        
+        # Handle role-specific profile
+        if user.role == 'vendor':
+            vendor_profile, created = VendorProfile.objects.get_or_create(user=user)
+            profile_form = VendorProfileForm(request.POST, instance=vendor_profile)
+        elif user.role == 'customer':
+            customer_profile, created = CustomerProfile.objects.get_or_create(user=user)
+            profile_form = CustomerProfileForm(request.POST, instance=customer_profile)
+        else:
+            profile_form = None
+        
+        # Validate and save both forms
+        if user_form.is_valid() and (profile_form is None or profile_form.is_valid()):
+            user_form.save()
+            if profile_form:
+                profile_form.save()
+            messages.success(request, 'Profile updated successfully!')
+            return redirect('profile')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        user_form = UserProfileForm(instance=user)
+        
+        # Load role-specific profile form
+        if user.role == 'vendor':
+            vendor_profile, created = VendorProfile.objects.get_or_create(user=user)
+            profile_form = VendorProfileForm(instance=vendor_profile)
+        elif user.role == 'customer':
+            customer_profile, created = CustomerProfile.objects.get_or_create(user=user)
+            profile_form = CustomerProfileForm(instance=customer_profile)
+        else:
+            profile_form = None
+    
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form,
+    }
+    return render(request, 'edit_profile.html', context)
+
+@login_required
+def change_password_view(request):
+    """Handle password change for logged-in users"""
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('profile')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    
+    return render(request, 'change_password.html', {'form': form})
+
+
+# Password Reset Views
+class CustomPasswordResetView(PasswordResetView):
+    """Custom password reset view"""
+    template_name = 'accounts/password_reset.html'
+    email_template_name = 'accounts/password_reset_email.html'
+    subject_template_name = 'accounts/password_reset_subject.txt'
+    success_url = reverse_lazy('password_reset_done')
+    form_class = CustomPasswordResetForm
+
+
+class CustomPasswordResetDoneView(PasswordResetDoneView):
+    """Password reset done view"""
+    template_name = 'password_reset_done.html'
+
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    """Password reset confirm view"""
+    template_name = 'password_reset_confirm.html'
+    success_url = reverse_lazy('password_reset_complete')
+    form_class = CustomSetPasswordForm
+
+
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+    """Password reset complete view"""
+    template_name = 'password_reset_complete.html'

@@ -111,6 +111,7 @@
                                 <li><a href="#">Accounts</a>
                                     <div class="dropdown">
                                         {% if user.is_authenticated %}
+                                            <ul><a href="{% url 'profile' %}">Profile</a></ul>
                                             <ul><a href="{% url 'logout' %}">Logout</a></ul>
                                         {% else %}
                                             <ul><a href="{% url 'login' %}">Login</a></ul>
