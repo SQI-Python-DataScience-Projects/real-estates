@@ -24,3 +24,6 @@ db.sqlite3
 
 # MY VIRTUAL ENVIRONMENT- TINUKE
 .Renv 
+
+# MY VIRTUAL ENVIRONMENT- ojt
+.Env 
