@@ -331,7 +331,8 @@ from django.conf import settings
 from django.template.loader import render_to_string
 
 from .forms import (
-    RegistrationForm, CustomLoginForm,
+    RegistrationForm, VendorRegistrationForm,
+    CustomLoginForm,
     UserProfileForm, VendorProfileForm, CustomerProfileForm,
     CustomPasswordResetForm, CustomSetPasswordForm, PropertyForm
 )
@@ -351,6 +352,19 @@ def index(request):
 # --------------------------------
 # Registration
 # --------------------------------
+def register_vendor(request):
+    if request.method == 'POST':
+        form = VendorRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            # login(request, user)
+            messages.success(request, "HI Vendor... You've registered successfully")
+            return redirect('vendor_dashboard')
+
+    else:
+        form = VendorRegistrationForm()
+    return render(request, 'register_vendor.html', {'form': form})
+
 def register_page(request):
     if request.method == "POST":
         form = RegistrationForm(request.POST)
@@ -381,6 +395,7 @@ def register_page(request):
                 )
                 email.content_subtype = "html"
                 email.send()
+                print('Registration Successful!!!')
                 messages.success(request, "A verification email has been sent. Please check your inbox.")
             except Exception as e:
                 print(f"Failed to send email: {e}")
@@ -416,25 +431,57 @@ def activate_account(request, uidb64, token):
 # --------------------------------
 # Login
 # --------------------------------
+
 def login_page(request):
     if request.method == "POST":
-        form = CustomLoginForm(request, data=request.POST)
+        form = CustomLoginForm(request,data=request.POST)
         if form.is_valid():
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")
             user = authenticate(username=username, password=password)
-            if user:
-                login(request, user)
-                messages.success(request, f"Welcome back, {username}!")
-                return redirect("index")
-            else:
-                messages.error(request, "Invalid username or password.")
+            login(request,user)
+            messages.success(request, f"Welcome back, {username}!")
+
+            # if user is not None:
+            #     login(request,user)
+            #     messages.success(request, f"Welcome back, {username}!")
+            #     return redirect("index") 
+            # else:
+            #     messages.error(request, "Invalid username or password.")
+
+            if user.role == 'vendor':
+                return redirect('vendor_dashboard')
+            elif user.role == 'customer':
+                return redirect('customer_dashboard')
+            elif user.role == 'admin':
+                return redirect('admin_dashboard')
+
         else:
-            messages.error(request, "Invalid login details.")
+            messages.warning(request, "Invalid username or password.")
+
     else:
         form = CustomLoginForm()
 
-    return render(request, "login.html", {"form": form})
+    return render(request, "login.html",{"form":form})
+
+
+# def user_login(request):
+#     if request.method == 'POST':
+#         form = AuthenticationForm(request, data=request.POST)
+#         if form.is_valid():
+#             user = form.get_user()
+#             login(request, user)
+            
+#             # Redirect based on role
+#             if user.role == 'vendor':
+#                 return redirect('vendor_dashboard')
+#             elif user.role == 'customer':
+#                 return redirect('customer_dashboard')
+#             elif user.role == 'admin':
+#                 return redirect('admin_dashboard')
+#     else:
+#         form = AuthenticationForm()
+#     return render(request, 'users/login.html', {'form': form})
 
 
 # --------------------------------
@@ -553,9 +600,16 @@ class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'password_reset_complete.html'
 
 
+def vendor_required(user):
+    return user.is_authenticated and user.role == 'vendor'
+
+
 # --------------------------------
 # Vendor Property Management
 # --------------------------------
+from django.contrib.auth.decorators import user_passes_test
+
+@user_passes_test(vendor_required)
 @login_required
 def vendor_property_list(request):
     if request.user.role == 'customer':
@@ -566,9 +620,7 @@ def vendor_property_list(request):
     properties = vendor_profile.properties.all()
     return render(request, 'vendor_property_list.html', {'properties': properties})
     
-    
-
-
+@user_passes_test(vendor_required)   
 @login_required
 def vendor_property_create(request):
     if request.user.role == 'customer':
@@ -590,7 +642,7 @@ def vendor_property_create(request):
     
     return render(request, 'vendor_property_form.html', {'form': form})
 
-
+@user_passes_test(vendor_required)
 @login_required
 def vendor_property_update(request, pk):
     property_obj = get_object_or_404(Property, pk=pk, vendor__user=request.user)
@@ -606,7 +658,7 @@ def vendor_property_update(request, pk):
     
     return render(request, 'update_vendor_property_form.html', {'form': form})
 
-
+@user_passes_test(vendor_required)
 @login_required
 def vendor_property_delete(request, pk):
     property_obj = get_object_or_404(Property, pk=pk, vendor__user=request.user)
@@ -618,3 +670,17 @@ def vendor_property_delete(request, pk):
 
 
 
+
+@login_required
+@user_passes_test(vendor_required)
+def vendor_dashboard(request):
+    return render(request, 'vendor_dashboard.html')
+
+@login_required
+def customer_dashboard(request):
+    return render(request, 'customer_dashboard.html')
+
+@login_required
+@user_passes_test(lambda u: u.role == 'admin')
+def admin_dashboard(request):
+    return render(request, 'admin_dashboard.html')

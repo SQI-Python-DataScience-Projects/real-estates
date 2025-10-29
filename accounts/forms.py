@@ -13,6 +13,7 @@ from .models import (
 # AUTHENTICATION & USER FORMS
 # ===========================
 
+#CUSTOMER FORM
 class RegistrationForm(UserCreationForm):
     username = forms.CharField(
         max_length=40,
@@ -33,6 +34,42 @@ class RegistrationForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = ("username", "email", "password1", "password2")
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.role = 'customer'
+        if commit:
+            user.save()
+        return user
+
+#VENDOR FORM
+class VendorRegistrationForm(UserCreationForm):
+    username = forms.CharField(
+        max_length=40,
+        widget=forms.TextInput(attrs={"class": "form-control"})
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={"class": "form-control"})
+    )
+    password1 = forms.CharField(
+        label="Password",
+        widget=forms.PasswordInput(attrs={"class": "form-control"})
+    )
+    password2 = forms.CharField(
+        label="Confirm Password",
+        widget=forms.PasswordInput(attrs={"class": "form-control"})
+    )
+
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'email', 'password1', 'password2']
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.role = 'vendor'
+        if commit:
+            user.save()
+        return user
 
 
 class CustomLoginForm(AuthenticationForm):
