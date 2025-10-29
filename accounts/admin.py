@@ -2,9 +2,9 @@ from django.contrib import admin
 from .models import CustomUser, VendorProfile, CustomerProfile,Property, PropertyImage, PropertyFeature
 from django.contrib.auth.admin import UserAdmin
 
+
+
 # Register your models here.
-
-
 @admin.register(CustomUser)
 class CustomUserAdmin(admin.ModelAdmin):
     list_display = ['email', 'username', 'role', 'is_active', 'created_at']

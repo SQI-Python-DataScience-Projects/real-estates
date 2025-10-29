@@ -1,0 +1,298 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Vendor Dashboard - {{ user.get_full_name }}{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb Area -->
+<section class="breadcumb-area bg-img" style="background-image: url('{% static 'img/bg-img/hero1.jpg' %}');">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-12">
+                <div class="breadcumb-content">
+                    <h3 class="breadcumb-title">Vendor Dashboard</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Dashboard Area -->
+<section class="south-contact-area section-padding-100">
+    <div class="container">
+        <!-- Welcome Section -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="contact-form" style="padding: 30px;">
+                    <h4 class="mb-2">Welcome back, {{ user.get_full_name }}!</h4>
+                    <p class="text-muted">Here's what's happening with your business today.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row mb-5">
+            <!-- Total Properties -->
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+                <div class="contact-form text-center" style="padding: 30px; border-top: 4px solid rgb(142, 118, 84);">
+                    <div class="mb-3" style="font-size: 3rem; color: rgb(142, 118, 84);">
+                        <i class="fa fa-home"></i>
+                    </div>
+                    <h2 class="mb-2" style="color: rgb(142, 118, 84); font-weight: 700;">{{ total_properties }}</h2>
+                    <p class="text-muted mb-0">Total Properties</p>
+                </div>
+            </div>
+
+            <!-- Active Listings -->
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+                <div class="contact-form text-center" style="padding: 30px; border-top: 4px solid #28a745;">
+                    <div class="mb-3" style="font-size: 3rem; color: #28a745;">
+                        <i class="fa fa-check-circle"></i>
+                    </div>
+                    <h2 class="mb-2" style="color: #28a745; font-weight: 700;">{{ active_listings }}</h2>
+                    <p class="text-muted mb-0">Active Listings</p>
+                </div>
+            </div>
+
+            <!-- Total Views -->
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+                <div class="contact-form text-center" style="padding: 30px; border-top: 4px solid #17a2b8;">
+                    <div class="mb-3" style="font-size: 3rem; color: #17a2b8;">
+                        <i class="fa fa-eye"></i>
+                    </div>
+                    <h2 class="mb-2" style="color: #17a2b8; font-weight: 700;">{{ total_views }}</h2>
+                    <p class="text-muted mb-0">Total Views</p>
+                </div>
+            </div>
+
+            <!-- Average Rating -->
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+                <div class="contact-form text-center" style="padding: 30px; border-top: 4px solid #ffc107;">
+                    <div class="mb-3" style="font-size: 3rem; color: #ffc107;">
+                        <i class="fa fa-star"></i>
+                    </div>
+                    <h2 class="mb-2" style="color: #ffc107; font-weight: 700;">{{ vendor_profile.rating }}/5</h2>
+                    <p class="text-muted mb-0">Average Rating</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Quick Actions -->
+            <div class="col-12 col-lg-4 mb-5">
+                <div class="contact-form" style="padding: 30px;">
+                    <h5 class="mb-4" style="border-bottom: 2px solid rgb(142, 118, 84); padding-bottom: 15px;">
+                        <i class="fa fa-bolt"></i> Quick Actions
+                    </h5>
+                    
+                    <a href="{% url 'vendor_property_create' %}" class="btn south-btn mb-3 w-100">
+                        <i class="fa fa-plus"></i> Add New Property
+                    </a>
+                    {% comment %} <a href="{% url 'vendor_properties' %}" class="btn south-btn-outline mb-3 w-100"> {% endcomment %}
+                    <a href="#" class="btn south-btn-outline mb-3 w-100">
+                        <i class="fa fa-list"></i> Manage Properties
+                    </a>
+                    {% comment %} <a href="{% url 'vendor_inquiries' %}" class="btn south-btn-outline mb-3 w-100"> {% endcomment %}
+                    <a href="#" class="btn south-btn-outline mb-3 w-100">
+                        <i class="fa fa-envelope"></i> View Inquiries
+                    </a>
+                    {% comment %} <a href="{% url 'edit_profile' %}" class="btn south-btn-outline w-100"> {% endcomment %}
+                    <a href="{% url 'edit_profile' %}" class="btn south-btn-outline w-100">
+                        <i class="fa fa-user"></i> Edit Profile
+                    </a>
+                </div>
+
+                <!-- Account Status -->
+                <div class="contact-form mt-4" style="padding: 30px;">
+                    <h5 class="mb-4" style="border-bottom: 2px solid rgb(142, 118, 84); padding-bottom: 15px;">
+                        <i class="fa fa-info-circle"></i> Account Status
+                    </h5>
+                    
+                    <div class="mb-3">
+                        <strong>Verification Status:</strong><br>
+                        {% if vendor_profile.is_verified %}
+                            <span class="badge" style="background-color: #28a745; color: white; padding: 5px 15px; border-radius: 20px; margin-top: 5px;">
+                                <i class="fa fa-check"></i> Verified
+                            </span>
+                        {% else %}
+                            <span class="badge" style="background-color: #ffc107; color: white; padding: 5px 15px; border-radius: 20px; margin-top: 5px;">
+                                <i class="fa fa-clock-o"></i> Pending
+                            </span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <strong>Member Since:</strong><br>
+                        <span class="text-muted">{{ user.created_at|date:"F d, Y" }}</span>
+                    </div>
+                    
+                    <div>
+                        <strong>Total Reviews:</strong><br>
+                        <span class="text-muted">{{ vendor_profile.total_reviews }} reviews</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activities -->
+            <div class="col-12 col-lg-8">
+                <!-- Recent Properties -->
+                <div class="contact-form mb-4" style="padding: 30px;">
+                    <h5 class="mb-4" style="border-bottom: 2px solid rgb(142, 118, 84); padding-bottom: 15px;">
+                        <i class="fa fa-home"></i> Recent Properties
+                    </h5>
+                    
+                    {% if recent_properties %}
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Property</th>
+                                        <th>Price</th>
+                                        <th>Status</th>
+                                        <th>Views</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for property in recent_properties %}
+                                    <tr>
+                                        <td>
+                                            <strong>{{ property.title|truncatewords:5 }}</strong><br>
+                                            <small class="text-muted">{{ property.location }}</small>
+                                        </td>
+                                        <td><strong style="color: rgb(142, 118, 84);">₦{{ property.price|floatformat:2 }}</strong></td>
+                                        <td>
+                                            {% if property.status == 'available' %}
+                                                <span class="badge" style="background-color: #28a745; color: white;">Active</span>
+                                            {% elif property.status == 'sold' %}
+                                                <span class="badge" style="background-color: #dc3545; color: white;">Sold</span>
+                                            {% else %}
+                                                <span class="badge" style="background-color: #6c757d; color: white;">{{ property.status }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ property.views|default:0 }}</td>
+                                        <td>
+                                            <a href="{% url 'edit_property' property.id %}" class="text-muted" title="Edit">
+                                                <i class="fa fa-pencil"></i>
+                                            </a>
+                                            <a href="{% url 'property_detail' property.id %}" class="text-muted ml-2" title="View">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="text-right mt-3">
+                            <a href="{% url 'vendor_properties' %}" style="color: rgb(142, 118, 84); font-weight: 600;">
+                                View All Properties <i class="fa fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fa fa-home" style="font-size: 4rem; color: #ddd;"></i>
+                            <p class="text-muted mt-3">No properties yet. Add your first property!</p>
+                            <a href="{% url 'vendor_property_create' %}" class="btn south-btn mt-3">
+                                <i class="fa fa-plus"></i> Add Property
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Recent Inquiries -->
+                <div class="contact-form" style="padding: 30px;">
+                    <h5 class="mb-4" style="border-bottom: 2px solid rgb(142, 118, 84); padding-bottom: 15px;">
+                        <i class="fa fa-envelope"></i> Recent Inquiries
+                    </h5>
+                    
+                    {% if recent_inquiries %}
+                        {% for inquiry in recent_inquiries %}
+                        <div class="inquiry-item" style="padding: 15px; margin-bottom: 15px; background: #f9f9f9; border-left: 4px solid rgb(142, 118, 84);">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <strong>{{ inquiry.customer.get_full_name }}</strong>
+                                    <br>
+                                    <small class="text-muted">{{ inquiry.property.title|truncatewords:6 }}</small>
+                                </div>
+                                <small class="text-muted">{{ inquiry.created_at|timesince }} ago</small>
+                            </div>
+                            <p class="mb-2">{{ inquiry.message|truncatewords:20 }}</p>
+                            <a href="{% url 'inquiry_detail' inquiry.id %}" style="color: rgb(142, 118, 84); font-size: 14px;">
+                                View Details <i class="fa fa-arrow-right"></i>
+                            </a>
+                        </div>
+                        {% endfor %}
+                        <div class="text-right mt-3">
+                            <a href="{% url 'vendor_inquiries' %}" style="color: rgb(142, 118, 84); font-weight: 600;">
+                                View All Inquiries <i class="fa fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fa fa-envelope-o" style="font-size: 4rem; color: #ddd;"></i>
+                            <p class="text-muted mt-3">No inquiries yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .south-btn-outline {
+        display: inline-block;
+        min-width: 140px;
+        height: 50px;
+        color: rgb(142, 118, 84);
+        border: 2px solid rgb(142, 118, 84);
+        border-radius: 0;
+        padding: 0 30px;
+        font-size: 12px;
+        line-height: 46px;
+        font-weight: 600;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+        background-color: transparent;
+    }
+    
+    .south-btn-outline:hover {
+        background-color: rgb(142, 118, 84);
+        color: #ffffff;
+        border-color: rgb(142, 118, 84);
+    }
+    
+    .badge {
+        display: inline-block;
+        padding: 5px 15px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+    
+    .table {
+        margin-bottom: 0;
+    }
+    
+    .table th {
+        border-top: none;
+        border-bottom: 2px solid #dee2e6;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 12px;
+        color: #6c757d;
+    }
+    
+    .table td {
+        vertical-align: middle;
+    }
+    
+    .inquiry-item:hover {
+        background: #f0f0f0 !important;
+        transition: all 0.3s ease;
+    }
+</style>
+{% endblock %}

@@ -33,127 +33,125 @@
 
 </head>
 
-<body>
-    {% comment %} <!-- Preloader -->
-    <div id="preloader">
-        <div class="south-load"></div>
-    </div> {% endcomment %}
+<body>  
 
-    <!-- ##### Header Area Start ##### -->
-    <header class="header-area">
 
-        <!-- Top Header Area -->
-        <div class="top-header-area">
-            <div class="h-100 d-md-flex justify-content-between align-items-center">
-                <div class="email-address">
-                    <a href="mailto:contact@southtemplate.com">contact@southtemplate.com</a>
-                </div>
-                <div class="phone-number d-flex">
-                    <div class="icon">
-                        <img src="{% static "img/icons/phone-call.png" %}" alt="image">
-                    </div>
-                    <div class="number">
-                        <a href="tel:+45 677 8993000 223">+45 677 8993000 223</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <!-- Main Header Area -->
+<div class="main-header-area" id="stickyHeader" style="background-color: rgba(0, 0, 0, 0.925);">
+  <div class="classy-nav-container breakpoint-off">
+      <!-- Classy Menu -->
+      <nav class="classy-navbar justify-content-between" id="southNav">
 
-        <!-- Main Header Area -->
-        <div class="main-header-area" id="stickyHeader">
-            <div class="classy-nav-container breakpoint-off">
-                <!-- Classy Menu -->
-                <nav class="classy-navbar justify-content-between" id="southNav">
+          <!-- Logo -->
+          <a class="nav-brand" href="{% url "index" %}"><img src="{% static "img/core-img/logo.png" %}" alt="image"></a>
 
-                    <!-- Logo -->
-                    <a class="nav-brand" href="{% url "index" %}"><img src="{% static "img/core-img/logo.png" %}" alt="image"></a>
+          <!-- Navbar Toggler -->
+          <div class="classy-navbar-toggler">
+              <span class="navbarToggler"><span></span><span></span><span></span></span>
+          </div>
 
-                    <!-- Navbar Toggler -->
-                    <div class="classy-navbar-toggler">
-                        <span class="navbarToggler"><span></span><span></span><span></span></span>
-                    </div>
+          <!-- Menu -->
+          <div class="classy-menu">
 
-                    <!-- Menu -->
-                    <div class="classy-menu">
+              <!-- close btn -->
+              <div class="classycloseIcon">
+                  <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+              </div>
 
-                        <!-- close btn -->
-                        <div class="classycloseIcon">
-                            <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
-                        </div>
+              <!-- Nav Start -->
+              <div class="classynav">
+                  <ul>
+                      <li><a href="{% url "index" %}">Home</a></li>
+                      <li><a href="#">Pages</a>
+                          <ul class="dropdown">
+                              <li><a href="{% url "index" %}">Home</a></li>
+                              <li><a href="{% url "about-us" %}">About Us</a></li>
+                              <li><a href="#">Listings</a>
+                                  <ul class="dropdown">
+                                      <li><a href="{% url "listings" %}">Listings</a></li>
+                                      <li><a href="{% url "single-listings" %}">Single Listings</a></li>
+                                  </ul>
+                              </li>
+                              <li><a href="#">Blog</a>
+                                  <ul class="dropdown">
+                                      <li><a href="{% url "blog" %}">Blog</a></li>
+                                      <li><a href="{% url "single-blog" %}">Single Blog</a></li>
+                                  </ul>
+                              </li>
+                              <li><a href="{% url "contact" %}">Contact</a></li>
+                              <li><a href="{% url "elements" %}">Elements</a></li>
+                          </ul>
+                      </li>
+                      <li><a href="{% url "about-us" %}">About Us</a></li>
+                      <li><a href="{% url "listings" %}">Properties</a></li>
+                      <li><a href="{% url "blog" %}">Blog</a></li>
+                      <li><a href="#">Accounts</a>
+                          <div class="dropdown">
+                              {% if user.is_authenticated %}
+                                  <ul><a href="{% url 'logout' %}">Logout</a></ul>
+                              {% else %}
+                                  <ul><a href="{% url 'login' %}">Login</a></ul>
+                                  <ul><a href="{% url 'register' %}">Register</a></ul>
+                              {% endif %}
+                          </div>
+                      </li>
+                      <li><a href="{% url "contact" %}">Contact</a></li>
+                  </ul>
 
-                        <!-- Nav Start -->
-                        <div class="classynav">
-                            <ul>
-                                <li><a href="{% url "index" %}">Home</a></li>
-                                <li><a href="#">Pages</a>
-                                    <ul class="dropdown">
-                                        <li><a href="#">Blog</a>
-                                            <ul class="dropdown">
-                                                <li><a href="{% url "blog" %}">Blog</a></li>
-                                                <li><a href="{% url "single-blog" %}">Single Blog</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="{% url "contact" %}">Contact Us</a></li>
-                                        <li><a href="{% url "elements" %}">Elements</a></li>
-                                        <li><a href="{% url "vendor_property_list" %}"> vendor list</a></li>
-                                        <li><a href="{% url "about-us" %}">About Us</a></li>                                      
-                                    </ul>
-                                </li>
-                                <li><a href="#">Accounts</a>
-                                    <div class="dropdown">
-                                        {% if user.is_authenticated %}
-                                            <ul><a href="{% url 'profile' %}">Profile</a></ul>
-                                            <ul><a href="{% url 'logout' %}">Logout</a></ul>
-                                        {% else %}
-                                            <ul><a href="{% url 'login' %}">Login</a></ul>
-                                            <ul><a href="{% url 'register' %}">Register</a></ul>
-                                        {% endif %}
-                                    </div>
-                                </li>
-                                <li><a href="#">Properties</a>
-                                    <ul class="dropdown">
-                                        <li><a href="{% url "listings" %}">listings</a></li>
-                                        <li><a href="{% url "single-listings" %}">Single Listings</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="{% url "blog" %}">Blog</a></li>
-                                <li><a href="{% url "vendor_dashboard" %}">Vendor</a></li>
-                                <div class="dropdown">
-                                        {% if user.is_authenticated %}
-                                            {% comment %} <ul><a href="{% url 'Vprofile' %}">Profile</a></ul>
-                                            <ul><a href="{% url 'Vlogout' %}">Logout</a></ul>
-                                        {% else %}
-                                            <ul><a href="{% url 'Vlogin' %}">Login</a></ul>
-                                            <ul><a href="{% url 'Vregister' %}">Register</a></ul> {% endcomment %}
-                                        {% endif %}
-                                    </div>
-                                {% comment %} <li><a href="{% url "contact" %}">Contact</a></li> {% endcomment %}
-                            </ul>
+                  <!-- Search Form -->
+                  <div class="south-search-form">
+                      <form action="#" method="post">
+                          <input type="search" name="search" id="search" placeholder="Search Anything ...">
+                          <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                      </form>
+                  </div>
 
-                            <!-- Search Form -->
-                            <div class="south-search-form">
-                                <form action="#" method="post">
-                                    <input type="search" name="search" id="search" placeholder="Search Anything ...">
-                                    <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
-                                </form>
-                            </div>
-
-                            <!-- Search Button -->
-                            <a href="#" class="searchbtn"><i class="fa" aria-hidden="true"></i></a>
-                        </div>
-                        <!-- Nav End -->
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </header>
+                  <!-- Search Button -->
+                  <a href="#" class="searchbtn"><i class="fa" aria-hidden="true"></i></a>
+              </div>
+              <!-- Nav End -->
+          </div>
+      </nav>
+  </div>
+</div>
     <!-- ##### Header Area End ##### -->
-{% block content %}
 
 
 
 
-{% endblock content %}
+
+<div class="row justify-content-center" style="padding-block: 100px;">
+  <div class="col-md-6 col-lg-5">
+    <div class="card shadow rounded-4">
+      <div class="card-body p-4">
+        <h3 class="text-center mb-4" style="color: rgb(148, 112, 84);">CREATE VENDOR ACCOUNT</h3>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+          {% csrf_token %}
+          {{form.as_p}}
+          <div class="form-check mb-3">
+          </div>
+          <button type="submit" class="btn  w-100" style="background-color: rgb(148, 112, 84);color: white;">Sign Up</button>
+        </form>
+        <p class="text-center mt-3 mb-0">
+          Already have an account? <a href="{% url 'login' %}" style="color: rgb(148, 112, 84);">Login</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 <!-- ##### Footer Area Start ##### -->
 <footer class="footer-area section-padding-100-0 bg-img gradient-background-overlay" style="background-image: url('{% static "img/bg-img/cta.jpg" %}');">
     <!-- Main Footer Area -->
