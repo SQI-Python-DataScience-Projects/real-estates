@@ -105,6 +105,17 @@ class VendorProfile(models.Model):
 
     def __str__(self):
         return f"{self.user.get_full_name()} - {self.company_name or 'Independent Vendor'}"
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+@receiver(post_save, sender=CustomUser)
+def create_user_profile(sender, instance, created, **kwargs):
+    """Automatically create vendor/customer profiles when users are created"""
+    if created:
+        if instance.role == 'vendor':
+            VendorProfile.objects.create(user=instance)
+        elif instance.role == 'customer':
+            CustomerProfile.objects.create(user=instance)
 
 
 class CustomerProfile(models.Model):
@@ -213,3 +224,4 @@ class PropertyFeature(models.Model):
 
     def __str__(self):
         return f"{self.property.title} - {self.feature}"
+

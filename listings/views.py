@@ -23,3 +23,4 @@ def contact_page(request):
 def elements_page(request):
     return render(request,"elements.html")
 
+

@@ -2,6 +2,8 @@ from django.urls import path
 from . import views
 
 
+
+
 # Authentication and User Management
 urlpatterns = [
     path("", views.index, name="index"),  # Homepage
@@ -39,13 +41,20 @@ urlpatterns += [
 
     # === Dashboards (role-based) ===
 urlpatterns += [
-    # path('vendor/dashboard/', views.vendor_dashboard, name='vendor_dashboard'),
-    path('vendor_dashboard/', views.vendor_dashboard, name='vendor_dashboard'),
+    
+    path('vendor/dashboard/', views.vendor_dashboard, name='vendor_dashboard'),
+    
     path('customer/dashboard/', views.customer_dashboard, name='customer_dashboard'),
     path('admin/dashboard/', views.admin_dashboard, name='admin_dashboard'),
 ]
 
-
-
+    # Property Search & Filter
+urlpatterns += [  
+                
+    path('properties/', views.property_search, name='property_search'),
+    path('properties/<int:pk>/', views.property_detail, name='property_detail'),
+    path('api/properties/', views.property_api, name='property_api'),
+    
+]
 
 
