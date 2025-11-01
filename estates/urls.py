@@ -51,6 +51,8 @@ urlpatterns = [
     # App routes
     path('', include('accounts.urls')),     # Authentication, profiles, vendor management
     path('listings/', include('listings.urls')),  # Property listing routes
+    
+    
 ]
 
 # Serve media files during development
