@@ -1,0 +1,31 @@
+REnv/
+requirements.txt
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+env/
+
+# SQLite database
+db.sqlite3
+
+# Logs
+*.log
+
+# Environment variables
+*.env
+
+# IDE/editor settings
+.vscode/
+.idea/
+
+# MY VIRTUAL ENVIRONMENT- TINUKE
+.Renv 
+
+# MY VIRTUAL ENVIRONMENT- ojt
+.Env 
+.Environ
+#
