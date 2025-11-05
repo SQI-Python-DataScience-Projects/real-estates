@@ -1,0 +1,426 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Dashboard - {{ user.get_full_name }}{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb Area -->
+<section class="breadcumb-area bg-img" style="background-image: url('{% static 'img/bg-img/hero1.jpg' %}');">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-12">
+                <div class="breadcumb-content">
+                    <h3 class="breadcumb-title">My Dashboard</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Dashboard Area -->
+<section class="south-contact-area section-padding-100">
+    <div class="container">
+        <!-- Welcome Section -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="contact-form" style="padding: 30px;">
+                    <h4 class="mb-2">Welcome back, {{ user.get_full_name }}!</h4>
+                    <p class="text-muted">Manage your saved properties and inquiries.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row mb-5">
+            <!-- Saved Properties -->
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+                <div class="contact-form text-center" style="padding: 30px; border-top: 4px solid rgb(142, 118, 84);">
+                    <div class="mb-3" style="font-size: 3rem; color: rgb(142, 118, 84);">
+                        <i class="fa fa-heart"></i>
+                    </div>
+                    <h2 class="mb-2" style="color: rgb(142, 118, 84); font-weight: 700;">{{ saved_properties_count|default:0 }}</h2>
+                    <p class="text-muted mb-0">Saved Properties</p>
+                </div>
+            </div>
+
+            <!-- Active Inquiries -->
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+                <div class="contact-form text-center" style="padding: 30px; border-top: 4px solid #17a2b8;">
+                    <div class="mb-3" style="font-size: 3rem; color: #17a2b8;">
+                        <i class="fa fa-envelope"></i>
+                    </div>
+                    <h2 class="mb-2" style="color: #17a2b8; font-weight: 700;">{{ active_inquiries|default:0 }}</h2>
+                    <p class="text-muted mb-0">Active Inquiries</p>
+                </div>
+            </div>
+
+            <!-- Properties Viewed -->
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+                <div class="contact-form text-center" style="padding: 30px; border-top: 4px solid #28a745;">
+                    <div class="mb-3" style="font-size: 3rem; color: #28a745;">
+                        <i class="fa fa-eye"></i>
+                    </div>
+                    <h2 class="mb-2" style="color: #28a745; font-weight: 700;">{{ properties_viewed|default:0 }}</h2>
+                    <p class="text-muted mb-0">Properties Viewed</p>
+                </div>
+            </div>
+
+            <!-- Reviews Written -->
+            <div class="col-12 col-md-6 col-lg-3 mb-4">
+                <div class="contact-form text-center" style="padding: 30px; border-top: 4px solid #ffc107;">
+                    <div class="mb-3" style="font-size: 3rem; color: #ffc107;">
+                        <i class="fa fa-star"></i>
+                    </div>
+                    <h2 class="mb-2" style="color: #ffc107; font-weight: 700;">{{ reviews_written|default:0 }}</h2>
+                    <p class="text-muted mb-0">Reviews Written</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Quick Actions & Profile -->
+            <div class="col-12 col-lg-4 mb-5">
+                <!-- Quick Actions -->
+                <div class="contact-form" style="padding: 30px;">
+                    <h5 class="mb-4" style="border-bottom: 2px solid rgb(142, 118, 84); padding-bottom: 15px;">
+                        <i class="fa fa-bolt"></i> Quick Actions
+                    </h5>
+                    
+                    <!-- ✅ FIXED: Changed from 'property_list' to 'listings' -->
+                    <a href="{% url 'listings' %}" class="btn south-btn mb-3 w-100">
+                        <i class="fa fa-search"></i> Browse Properties
+                    </a>
+                    {% comment %}
+                    <a href="{% url 'saved_properties' %}" class="btn south-btn-outline mb-3 w-100">
+                        <i class="fa fa-heart"></i> Saved Properties
+                    </a>
+                    <a href="{% url 'customer_inquiries' %}" class="btn south-btn-outline mb-3 w-100">
+                        <i class="fa fa-envelope"></i> My Inquiries
+                    </a>
+                    {% endcomment %}
+                    <a href="{% url 'edit_profile' %}" class="btn south-btn-outline w-100">
+                        <i class="fa fa-user"></i> Edit Profile
+                    </a>
+                </div>
+
+                <!-- Profile Info -->
+                <div class="contact-form mt-4" style="padding: 30px;">
+                    <h5 class="mb-4" style="border-bottom: 2px solid rgb(142, 118, 84); padding-bottom: 15px;">
+                        <i class="fa fa-user-circle"></i> Profile Info
+                    </h5>
+                    
+                    <div class="text-center mb-4">
+                        {% if user.profile_picture %}
+                            <img src="{{ user.profile_picture.url }}" alt="{{ user.get_full_name }}" 
+                                 style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid rgb(142, 118, 84);">
+                        {% else %}
+                            <div style="width: 100px; height: 100px; border-radius: 50%; background-color: rgb(142, 118, 84); 
+                                        color: white; display: inline-flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto;">
+                                {{ user.get_full_name|first|upper }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <strong>Name:</strong><br>
+                        <span class="text-muted">{{ user.get_full_name }}</span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <strong>Email:</strong><br>
+                        <span class="text-muted">{{ user.email }}</span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <strong>Phone:</strong><br>
+                        <span class="text-muted">{{ user.phone|default:"Not provided" }}</span>
+                    </div>
+                    
+                    <div>
+                        <strong>Member Since:</strong><br>
+                        <span class="text-muted">{{ user.date_joined|date:"F d, Y" }}</span>
+                    </div>
+                </div>
+
+                <!-- Recent Searches -->
+                <div class="contact-form mt-4" style="padding: 30px;">
+                    <h5 class="mb-4" style="border-bottom: 2px solid rgb(142, 118, 84); padding-bottom: 15px;">
+                        <i class="fa fa-history"></i> Recent Searches
+                    </h5>
+                    
+                    {% if recent_searches %}
+                        <ul class="list-unstyled">
+                            {% for search in recent_searches %}
+                            <li class="mb-3" style="padding-bottom: 10px; border-bottom: 1px solid #eee;">
+                                <!-- ✅ FIXED: Changed from 'property_list' to 'listings' -->
+                                <a href="{% url 'listings' %}?{{ search.query_string }}" style="color: rgb(142, 118, 84);">
+                                    <i class="fa fa-search"></i> {{ search.display_text }}
+                                </a>
+                                <br>
+                                <small class="text-muted">{{ search.created_at|timesince }} ago</small>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted text-center">No recent searches</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="col-12 col-lg-8">
+                <!-- Saved Properties -->
+                <div class="contact-form mb-4" style="padding: 30px;">
+                    <h5 class="mb-4" style="border-bottom: 2px solid rgb(142, 118, 84); padding-bottom: 15px;">
+                        <i class="fa fa-heart"></i> Saved Properties
+                    </h5>
+                    
+                    {% if saved_properties %}
+                        <div class="row">
+                            {% for property in saved_properties %}
+                            <div class="col-12 col-md-6 mb-4">
+                                <div class="property-card" style="border: 1px solid #ddd; border-radius: 5px; overflow: hidden;">
+                                    {% if property.featured_image %}
+                                        <img src="{{ property.featured_image.url }}" alt="{{ property.title }}" 
+                                             style="width: 100%; height: 200px; object-fit: cover;">
+                                    {% else %}
+                                        <div style="width: 100%; height: 200px; background-color: #f0f0f0; display: flex; 
+                                                    align-items: center; justify-content: center;">
+                                            <i class="fa fa-home" style="font-size: 3rem; color: #ccc;"></i>
+                                        </div>
+                                    {% endif %}
+                                    <div style="padding: 15px;">
+                                        <h6 class="mb-2">
+                                            <!-- ✅ FIXED: Added check for property.pk -->
+                                            {% if property.pk %}
+                                                <a href="{% url 'property_detail' pk=property.pk %}" style="color: rgb(142, 118, 84);">
+                                                    {{ property.title|truncatewords:6 }}
+                                                </a>
+                                            {% else %}
+                                                <span style="color: rgb(142, 118, 84);">{{ property.title|truncatewords:6 }}</span>
+                                            {% endif %}
+                                        </h6>
+                                        <p class="text-muted mb-2" style="font-size: 14px;">
+                                            <i class="fa fa-map-marker"></i> {{ property.location|default:property.city }}
+                                        </p>
+                                        <p class="mb-3" style="color: rgb(142, 118, 84); font-weight: 700; font-size: 18px;">
+                                            ₦{{ property.price|floatformat:0 }}
+                                        </p>
+                                        <div class="d-flex justify-content-between">
+                                            {% if property.pk %}
+                                                <a href="{% url 'property_detail' pk=property.pk %}" class="btn btn-sm south-btn-outline">
+                                                    View Details
+                                                </a>
+                                                {% comment %}
+                                                <a href="{% url 'remove_saved_property' property.pk %}" class="btn btn-sm" 
+                                                   style="color: #dc3545;" title="Remove">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                                {% endcomment %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% comment %}
+                        <div class="text-right mt-3">
+                            <a href="{% url 'saved_properties' %}" style="color: rgb(142, 118, 84); font-weight: 600;">
+                                View All Saved <i class="fa fa-arrow-right"></i>
+                            </a>
+                        </div>
+                        {% endcomment %}
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fa fa-heart-o" style="font-size: 4rem; color: #ddd;"></i>
+                            <p class="text-muted mt-3">You haven't saved any properties yet.</p>
+                            <!-- ✅ FIXED: Changed from 'property_list' to 'listings' -->
+                            <a href="{% url 'listings' %}" class="btn south-btn mt-3">
+                                <i class="fa fa-search"></i> Browse Properties
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Recent Inquiries -->
+                <div class="contact-form mb-4" style="padding: 30px;">
+                    <h5 class="mb-4" style="border-bottom: 2px solid rgb(142, 118, 84); padding-bottom: 15px;">
+                        <i class="fa fa-envelope"></i> Recent Inquiries
+                    </h5>
+                    
+                    {% if recent_inquiries %}
+                        {% for inquiry in recent_inquiries %}
+                        <div class="inquiry-item" style="padding: 15px; margin-bottom: 15px; background: #f9f9f9; border-left: 4px solid rgb(142, 118, 84);">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <strong>{{ inquiry.property.title|truncatewords:6 }}</strong>
+                                    <br>
+                                    <small class="text-muted">
+                                        To: {{ inquiry.property.vendor.business_name|default:inquiry.property.vendor.user.username }}
+                                    </small>
+                                </div>
+                                <div class="text-right">
+                                    <small class="text-muted">{{ inquiry.created_at|timesince }} ago</small>
+                                    <br>
+                                    {% if inquiry.status == 'pending' %}
+                                        <span class="badge" style="background-color: #ffc107; color: white;">Pending</span>
+                                    {% elif inquiry.status == 'responded' %}
+                                        <span class="badge" style="background-color: #28a745; color: white;">Responded</span>
+                                    {% else %}
+                                        <span class="badge" style="background-color: #6c757d; color: white;">{{ inquiry.status }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <p class="mb-2">{{ inquiry.message|truncatewords:20 }}</p>
+                            {% if inquiry.response %}
+                                <div style="background: white; padding: 10px; margin-top: 10px; border-left: 3px solid #28a745;">
+                                    <small><strong>Response:</strong></small><br>
+                                    <small>{{ inquiry.response|truncatewords:15 }}</small>
+                                </div>
+                            {% endif %}
+                            {% comment %}
+                            <a href="{% url 'inquiry_detail' inquiry.id %}" style="color: rgb(142, 118, 84); font-size: 14px;">
+                                View Details <i class="fa fa-arrow-right"></i>
+                            </a>
+                            {% endcomment %}
+                        </div>
+                        {% endfor %}
+                        {% comment %}
+                        <div class="text-right mt-3">
+                            <a href="{% url 'customer_inquiries' %}" style="color: rgb(142, 118, 84); font-weight: 600;">
+                                View All Inquiries <i class="fa fa-arrow-right"></i>
+                            </a>
+                        </div>
+                        {% endcomment %}
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fa fa-envelope-o" style="font-size: 4rem; color: #ddd;"></i>
+                            <p class="text-muted mt-3">You haven't made any inquiries yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Recommended Properties -->
+                <div class="contact-form" style="padding: 30px;">
+                    <h5 class="mb-4" style="border-bottom: 2px solid rgb(142, 118, 84); padding-bottom: 15px;">
+                        <i class="fa fa-thumbs-up"></i> Recommended For You
+                    </h5>
+                    
+                    {% if recommended_properties %}
+                        <div class="row">
+                            {% for property in recommended_properties %}
+                            <div class="col-12 col-md-6 mb-4">
+                                <div class="property-card" style="border: 1px solid #ddd; border-radius: 5px; overflow: hidden;">
+                                    {% if property.featured_image %}
+                                        <img src="{{ property.featured_image.url }}" alt="{{ property.title }}" 
+                                             style="width: 100%; height: 200px; object-fit: cover;">
+                                    {% else %}
+                                        <div style="width: 100%; height: 200px; background-color: #f0f0f0; display: flex; 
+                                                    align-items: center; justify-content: center;">
+                                            <i class="fa fa-home" style="font-size: 3rem; color: #ccc;"></i>
+                                        </div>
+                                    {% endif %}
+                                    <div style="padding: 15px;">
+                                        <h6 class="mb-2">
+                                            <!-- ✅ FIXED: Added check for property.pk -->
+                                            {% if property.pk %}
+                                                <a href="{% url 'property_detail' pk=property.pk %}" style="color: rgb(142, 118, 84);">
+                                                    {{ property.title|truncatewords:6 }}
+                                                </a>
+                                            {% else %}
+                                                <span style="color: rgb(142, 118, 84);">{{ property.title|truncatewords:6 }}</span>
+                                            {% endif %}
+                                        </h6>
+                                        <p class="text-muted mb-2" style="font-size: 14px;">
+                                            <i class="fa fa-map-marker"></i> {{ property.location|default:property.city }}
+                                        </p>
+                                        <p class="mb-3" style="color: rgb(142, 118, 84); font-weight: 700; font-size: 18px;">
+                                            ₦{{ property.price|floatformat:0 }}
+                                        </p>
+                                        {% if property.pk %}
+                                            <a href="{% url 'property_detail' pk=property.pk %}" class="btn btn-sm south-btn w-100">
+                                                View Details
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fa fa-home" style="font-size: 4rem; color: #ddd;"></i>
+                            <p class="text-muted mt-3">No recommendations available yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .south-btn-outline {
+        display: inline-block;
+        min-width: 140px;
+        height: 50px;
+        color: rgb(142, 118, 84);
+        border: 2px solid rgb(142, 118, 84);
+        border-radius: 0;
+        padding: 0 30px;
+        font-size: 12px;
+        line-height: 46px;
+        font-weight: 600;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+        background-color: transparent;
+        text-decoration: none;
+        text-align: center;
+    }
+    
+    .south-btn-outline:hover {
+        background-color: rgb(142, 118, 84);
+        color: #ffffff !important;
+        border-color: rgb(142, 118, 84);
+    }
+    
+    .badge {
+        display: inline-block;
+        padding: 5px 15px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+    
+    .table {
+        margin-bottom: 0;
+    }
+    
+    .table th {
+        border-top: none;
+        border-bottom: 2px solid #dee2e6;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 12px;
+        color: #6c757d;
+    }
+    
+    .table td {
+        vertical-align: middle;
+    }
+    
+    .inquiry-item:hover,
+    .property-card:hover {
+        transform: translateY(-2px);
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .property-card {
+        transition: all 0.3s ease;
+    }
+</style>
+{% endblock %}
